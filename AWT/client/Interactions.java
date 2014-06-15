@@ -33,13 +33,11 @@ public class Interactions implements Runnable {
 
 	private void establishConnect() {
 		try {
-			System.out.println("Connecting to server");
 			s = new Socket(hostname, port);
 			in = new Scanner(s.getInputStream());
 			out = new PrintWriter(s.getOutputStream(), true);
 			out.println(ClientFrame.getName());
 			established = true;
-			System.out.println("Successfully connected");
 			ClientFrame.hideActuators();
 			ClientFrame.openGameField();
 		} catch (IOException exc) {
@@ -52,14 +50,25 @@ public class Interactions implements Runnable {
 		if (in.hasNextLine()) {
 			line = in.nextLine();
 			String[] keywords = line.split("-");
-			if (keywords[0].equals("remove")) {
-				Portray.removeUser(keywords[1]);
+			if (keywords[0].equals("level")) {
+				handMaze(keywords[1]);
 				return;
 			}
-			if (keywords[0].equals("level"))
-				handMaze(keywords[1]);
-			else
-				ClientFrame.handInfo(keywords);
+			if (keywords[0].equals("remove")) {
+				Users user = new Users();
+				user.setName(keywords[1]);
+				Portray.removeUser(user);
+				return;
+			}
+			if (keywords[0].equals("user")) {
+				Users user = new Users();
+				user.setName(keywords[1]);
+				int x = Integer.parseInt(keywords[2]);
+				int y = Integer.parseInt(keywords[3]);
+				user.setCoordinates(x, y);
+				Portray.handInformation(user);
+				return;
+			}
 		}
 	}
 
@@ -84,7 +93,6 @@ public class Interactions implements Runnable {
 					field[a][b] = true;
 				else
 					field[a][b] = false;
-		System.out.println("Handing field");
 		Portray.setField(field);
 	}
 
@@ -98,7 +106,6 @@ public class Interactions implements Runnable {
 					field[a][b] = true;
 				else
 					field[a][b] = false;
-		System.out.println("Handing field");
 		Portray.setField(field);
 	}
 

@@ -17,8 +17,6 @@ public class ClientFrame {
 	private static Portray game;
 	private static String name;
 
-	// private static String name;
-
 	ClientFrame() {
 		setFrame();
 		attachActuators();
@@ -48,8 +46,10 @@ public class ClientFrame {
 
 			@Override
 			public void windowClosing(WindowEvent arg0) {
-				Interactions.handMessage("leave");
-
+				try {
+					Interactions.handMessage("leave");
+				} catch (NullPointerException exc) {
+				}
 			}
 
 			@Override
@@ -96,10 +96,6 @@ public class ClientFrame {
 
 		frame.add(input, c);
 
-	}
-
-	static void handInfo(String[] raw) {
-		Portray.handInformation(raw);
 	}
 
 	static void hideActuators() {

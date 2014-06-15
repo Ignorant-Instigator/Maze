@@ -2,10 +2,8 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
 import java.awt.geom.Rectangle2D;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Iterator;
 
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
@@ -17,40 +15,36 @@ public class Portray extends JComponent {
 	static boolean[][] field;
 	private static int x, y, lx, ly;
 	private Human me;
-	private static OtherPlayers information;
+	private static LinkedList<Users> collection;
 	private String name;
-	private static List<String> names = new ArrayList<>();
-	private static List<Integer> xU = new ArrayList<>();
-	private static List<Integer> yU = new ArrayList<>();
 
 	Portray(String name) {
 		this.name = name;
 		setSize(305, 327); // crucial line!
-		information = new OtherPlayers();
+		collection = new LinkedList<Users>();
 		me = new Human();
-		System.out.println("Adjusting game field");
 	}
 
-	static void handInformation(String[] rawInfo) {
-		int index;
-		if (!names.contains(rawInfo[0])) {
-			names.add(rawInfo[0]);
-			xU.add(Integer.parseInt(rawInfo[1]));
-			yU.add(Integer.parseInt(rawInfo[2]));
-		} else {
-			index = names.indexOf(rawInfo[0]);
-			xU.set(index, Integer.parseInt(rawInfo[1]));
-			yU.set(index, Integer.parseInt(rawInfo[2]));
+	static void handInformation(Users info) {
+		String name = info.getName();
+		for (Users user : collection) {
+			if (user.getName().equals(name)) {
+				user.setCoordinates(info.getX(), info.getY());
+				return;
+			}
 		}
+		collection.add(info);
 	}
 
-	static void removeUser(String nick) {
-		int index;
-		if (names.contains(nick)) {
-			index = names.indexOf(nick);
-			names.remove(index);
-			xU.remove(index);
-			yU.remove(index);
+	static void removeUser(Users info) {
+		String name = info.getName();
+		Iterator itr = collection.iterator();
+		for (Users user : collection) {
+			if (user.getName().equals(name)) {
+				itr.remove();
+				return;
+			} else
+				itr.next();
 		}
 	}
 
@@ -79,9 +73,9 @@ public class Portray extends JComponent {
 			y = ly;
 		}
 		g2.setColor(Color.RED);
-		for (int a = 0; a < names.size(); a++) {
-			g2.fill(new Rectangle2D.Double(xU.get(a), yU.get(a), 10, 10));
-			g.drawString(names.get(a), xU.get(a) + 10, yU.get(a));
+		for (Users player : collection) {
+			g2.fill(new Rectangle2D.Double(player.getX(), player.getY(), 10, 10));
+			g.drawString(player.getName(), player.getX() + 10, player.getY());
 
 		}
 	}
@@ -98,6 +92,7 @@ public class Portray extends JComponent {
 			lx += 10;
 		x = lx;
 		y = ly;
+		Interactions.handCoordinates(x, y);
 	}
 
 	class Human implements Runnable {
@@ -106,7 +101,6 @@ public class Portray extends JComponent {
 		private ActionMap am = getActionMap();
 
 		Human() {
-			System.out.println("Human class is set");
 			bindKeys();
 			Thread s = new Thread(this);
 			s.start();
@@ -176,7 +170,6 @@ public class Portray extends JComponent {
 	}
 
 	public static void setField(boolean array[][]) {
-		System.out.println("Recieving field");
 		field = array;
 		spawn();
 	}
