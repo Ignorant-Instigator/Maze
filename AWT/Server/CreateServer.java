@@ -36,7 +36,7 @@ class Player implements Runnable {
 						CreateServer.removeUser(mySocket);
 					}
 				} else
-					CreateServer.notify(name + "-" + tmp, mySocket);
+					CreateServer.notify("user-" + name + "-" + tmp, mySocket);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -63,7 +63,6 @@ public class CreateServer {
 	}
 
 	static void notify(String coordinates, Socket exception) throws IOException {
-		System.out.println(coordinates);
 		PrintWriter out;
 		for (Socket sock : users) {
 			if (sock != exception) {
