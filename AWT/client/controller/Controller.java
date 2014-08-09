@@ -1,7 +1,13 @@
+package controller;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.Observable;
 import java.util.Observer;
+
+import data.Interactions;
+import data.Users;
+import view.View;
+import model.Model;
 
 public class Controller implements Observer {
 	private Interactions interact;

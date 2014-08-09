@@ -1,5 +1,9 @@
+package model;
 import java.util.Iterator;
 import java.util.Observable;
+
+import data.LinkedList;
+import data.Users;
 
 public class Model extends Observable {
 	private LinkedList<Users> users;

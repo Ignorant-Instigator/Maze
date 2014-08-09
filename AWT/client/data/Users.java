@@ -1,3 +1,4 @@
+package data;
 public class Users {
 	private String name;
 	private int x, y;

@@ -1,3 +1,4 @@
+package view;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -9,6 +10,9 @@ import java.util.Observer;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
+import data.Users;
+import model.Model;
 
 public class View extends JComponent implements Observer {
 	private Model model;
