@@ -19,20 +19,20 @@ class Player implements Runnable {
 			in = new Scanner(mySocket.getInputStream());
 			out = new PrintWriter(mySocket.getOutputStream(), true);
 			name = in.nextLine();
-			out.println("level-"+CreateServer.getBinaryField());
+			out.println("level-"+Server.getBinaryField());
 			while (in.hasNextLine() && !done) {
 				String tmp = in.nextLine();
 				if (tmp.equals("-finished")) {
-					CreateServer.generateNewField();
+					Server.generateNewField();
 
 				} else if (tmp.equals("-leave")) {
 					{
 						done = true;
-						CreateServer.notify("remove-" + name, mySocket);
-						CreateServer.removeUser(mySocket);
+						Server.notify("remove-" + name, mySocket);
+						Server.removeUser(mySocket);
 					}
 				} else
-					CreateServer.notify("user-" + name + "-" + tmp, mySocket);
+					Server.notify("user-" + name + "-" + tmp, mySocket);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

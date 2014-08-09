@@ -4,7 +4,7 @@ import java.awt.event.ActionListener;
 public class ServerController {
 	private ServerModel model;
 	private ServerView view;
-	private CreateServer server;
+	private Server server;
 
 	public ServerController(ServerModel model, ServerView view) {
 		this.model = model;
@@ -18,7 +18,7 @@ public class ServerController {
 			public void actionPerformed(ActionEvent e) {
 				Thread t = new Thread(new Runnable() {
 					public void run() {
-						server = new CreateServer();
+						server = new Server();
 					}
 				});
 				t.start();
@@ -28,7 +28,7 @@ public class ServerController {
 		});
 		view.stop.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				CreateServer.closeServer();
+				Server.closeServer();
 				System.exit(0);
 			}
 		});

@@ -8,14 +8,14 @@ import java.util.List;
 import java.util.Scanner;
 
 
-public class CreateServer {
+public class Server {
 	private static ServerSocket socket;
 	private static List<Socket> users = new ArrayList<>();
 	private static MazeGenerator maze = new MazeGenerator(30);
 	private static boolean field[][];
 	private static String binaryField;
 
-	CreateServer() {
+	Server() {
 		maze.openSite();
 		field = maze.getField();
 		parseFieldToBinary();
